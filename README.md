@@ -1,50 +1,49 @@
-# React + TypeScript + Vite
+# React Application with Axios - Best Practices for API Handling
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This React application demonstrates best practices for handling API requests using Axios. It utilizes a **class-based approach** to organize API calls, encapsulating logic for each service in separate classes. The application is designed for efficient token management, automatic token refreshing, API request retries, and comprehensive error handling.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Features](#features)
+- [Setup](#setup)
+- [Usage](#usage)
+- [WeatherApi Class](#weatherapi-class)
+- [Best Practices](#best-practices)
+- [Folder Structure](#folder-structure)
+- [Contributing](#contributing)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 1. **Class-Based API Handling**
 
-- Configure the top-level `parserOptions` property like this:
+- The API logic is structured around **classes**, making it easier to manage multiple API services.
+- Each service (like `WeatherApi`) has its own class that handles API requests, URL construction, and error handling, improving code maintainability and readability.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 2. **Axios Interceptors for API Requests**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- Global Axios configuration with interceptors that automatically include the `Authorization` token in request headers.
+- Request and response interceptors ensure consistent API calls and seamless token expiration handling.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 3. **Token Management and Refresh**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+- When a `401 Unauthorized` error is encountered, the app will attempt to refresh the authentication token.
+- The failed request is retried automatically with the new token, preventing the user from being logged out unexpectedly.
+
+### 4. **Retry Logic for Expired Tokens**
+
+- If the token has expired, the request is retried after the token is refreshed.
+- This ensures users experience minimal disruption when their tokens expire.
+
+### 5. **Error Handling**
+
+- Global error handling is in place to catch and manage errors from failed API requests, providing informative error messages and improving the overall user experience.
+
+## Setup
+
+### 1. **Install Dependencies**
+
+Ensure that `axios` is installed in your project. You can install it by running:
+
+```bash
+npm install axios
 ```
