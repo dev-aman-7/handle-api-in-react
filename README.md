@@ -47,3 +47,15 @@ Ensure that `axios` is installed in your project. You can install it by running:
 ```bash
 npm install axios
 ```
+
+Run Code
+
+```bash
+npm run dev
+```
+
+or
+
+```bash
+yarn dev
+```
