@@ -26,7 +26,7 @@ const useInterceptor = (axiosInstance: AxiosInstance) => {
 
       if (
         error.response &&
-        error.response.status === 404 &&
+        error.response.status === 401 &&
         !originalRequest._retry
       ) {
         originalRequest._retry = true;
