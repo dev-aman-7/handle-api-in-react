@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { WeatherApi } from "../api/weather";
+import { WeatherApi } from "../api/weather/weather";
 
 const Card = () => {
   const weather = new WeatherApi();

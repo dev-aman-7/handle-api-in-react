@@ -1,16 +1,14 @@
-import axios from "axios";
+import { AxiosInstance } from "axios";
 import { useAuth } from "../context/auth-context";
 import { generateToken } from "./token";
 
-const useInterceptor = () => {
-  const { authToken: token, setAuthToken } = useAuth();
-
-  const axiosInstance = axios.create();
+const useInterceptor = (axiosInstance: AxiosInstance) => {
+  const { authToken, setAuthToken } = useAuth();
 
   axiosInstance.interceptors.request.use(
     (config) => {
-      if (token) {
-        config.headers["Authorization"] = `Bearer ${token}`;
+      if (authToken) {
+        config.headers["Authorization"] = `Bearer ${authToken}`;
       }
       return config;
     },
@@ -35,7 +33,6 @@ const useInterceptor = () => {
 
         try {
           const newToken = generateToken();
-          console.log(newToken, "newToken");
           setAuthToken(newToken);
 
           originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
